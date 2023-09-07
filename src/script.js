@@ -139,6 +139,12 @@ const runnerListItem = (runner) => {
     totalDistanceMiles = Math.round(totalDistanceMiles * 100) / 100
     totalDistanceKilo = Math.round(totalDistanceKilo * 100) / 100
 
+    let lapCountSorted = runner.raceData.sort((a,b) => a.lapCount - b.lapCount)
+    let minLaps = lapCountSorted[0].lapCount
+    let minLapsYear = lapCountSorted[0].year
+    let maxLaps = lapCountSorted[lapCountSorted.length - 1].lapCount
+    let maxLapsYear = lapCountSorted[lapCountSorted.length - 1].year
+
     return `
         <div class="row runner">
             <div class="six columns">${runner.indexName}</div>
@@ -156,6 +162,8 @@ const runnerListItem = (runner) => {
                     <div>Fastest Lap Time: ${fastestLapTime}</div>
                     <div>Slowest Lap Time: ${slowestLapTime}</div>
                     <div>Average Lap Time: ${averageLapTime}</div>
+                    <div>Max Laps: ${maxLaps} (${minLapsYear})</div>
+                    <div>Min Laps: ${minLaps} (${maxLapsYear})</div>
                     <div>Lowest Bib: ${lowestBib}</div>
                 </div>
                 <div class="eight columns">
@@ -547,7 +555,7 @@ const appendOverallHistogram = (raceData) => {
             let bins = histogram(year.splits)
 
             let graph = dataGroup.selectAll(selector)
-                .data(bins)
+                .data(bins, d => year.year)
 
             graph
                 .enter()
