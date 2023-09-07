@@ -1,0 +1,112 @@
+body {
+    user-select: none;
+}
+
+h1 {
+    text-align: center;
+}
+
+h3 {
+    text-align: center;
+}
+
+#runnerSearch_input {
+    cursor: auto;
+}
+
+.header {
+    padding-left: 1em;
+    padding-right: 1em;
+}
+
+.attempts {
+    text-align: right;
+}
+
+.runner {
+    text-transform: capitalize;
+    font-variant: small-caps;
+
+    margin-bottom: 1em;
+
+    cursor: pointer;
+}
+
+.runnerData {
+    background-color: white;
+    padding: 1em;
+    padding-bottom: 1.5em;
+    border-top: 1px lightgray solid;
+
+    max-height: 1em;
+    transition: max-height 0.1s;
+
+    overflow: hidden;
+}
+
+.runnerData.extended {
+    max-height: 100em;
+
+    transition: max-height 0.1s ease-in;
+}
+
+.pagination {
+    text-align: center;
+
+    border-top: 1px lightgray solid;
+    padding-top: 1em;
+}
+
+.pagination #pageCount {
+    width: 25%;
+
+    position: absolute;
+    left: 35%;
+    right: 35%;
+}
+
+.pagination #prevRunnerPage_button {
+    position: absolute;
+    left: 0%;
+}
+
+.pagination #nextRunnerPage_button {
+    position: absolute;
+    right: 0%;
+}
+
+#overall-holder {
+    margin-top: 2.5em;
+    
+    padding-left: 1em;
+    padding-right: 1em;
+}
+
+.loader-holder {
+    display: flex;
+    justify-content: center;
+}
+
+.loader {
+    margin: 1em;
+
+    /* from https://www.w3schools.com/howto/howto_css_loader.asp */
+    border: 1rem solid #f3f3f3;
+    /* Light grey */
+    border-top: 1rem solid darkgray;
+    /* Blue */
+    border-radius: 50%;
+    width: 2em;
+    height: 2em;
+    animation: spin 2s linear infinite;
+}
+
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
+}
