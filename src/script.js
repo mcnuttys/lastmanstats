@@ -139,9 +139,10 @@ const runnerListItem = (runner) => {
     totalDistanceMiles = Math.round(totalDistanceMiles * 100) / 100
     totalDistanceKilo = Math.round(totalDistanceKilo * 100) / 100
 
-    let lapCountSorted = runner.raceData.sort((a,b) => a.lapCount - b.lapCount)
+    let lapCountSorted = runner.raceData.sort((a, b) => a.lapCount - b.lapCount)
     let minLaps = lapCountSorted[0].lapCount
     let minLapsYear = lapCountSorted[0].year
+
     let maxLaps = lapCountSorted[lapCountSorted.length - 1].lapCount
     let maxLapsYear = lapCountSorted[lapCountSorted.length - 1].year
 
@@ -162,8 +163,8 @@ const runnerListItem = (runner) => {
                     <div>Fastest Lap Time: ${fastestLapTime}</div>
                     <div>Slowest Lap Time: ${slowestLapTime}</div>
                     <div>Average Lap Time: ${averageLapTime}</div>
-                    <div>Max Laps: ${maxLaps} (${minLapsYear})</div>
-                    <div>Min Laps: ${minLaps} (${maxLapsYear})</div>
+                    <div>Max Laps: ${maxLaps} (${maxLapsYear})</div>
+                    <div>Min Laps: ${minLaps} (${minLapsYear})</div>
                     <div>Lowest Bib: ${lowestBib}</div>
                 </div>
                 <div class="eight columns">
@@ -403,10 +404,10 @@ const populateOverallStats = (raceData) => {
     let holder = document.querySelector('#overall-holder');
     holder.removeChild(holder.childNodes[0]);
 
-    holder.innerHTML = overStatsDisplay(raceData)
+    holder.innerHTML = overallStatsDisplay(raceData)
 }
 
-const overStatsDisplay = (raceData) => {
+const overallStatsDisplay = (raceData) => {
     let totalLaps = raceData.map(d => d.totalLaps).reduce((acc, d) => acc + d)
     let totalTime = Math.round(raceData.map(d => d.totalTime).reduce((acc, d) => acc + d) * 100) / 100
 
