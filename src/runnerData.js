@@ -159,13 +159,13 @@ const getResults = async (year) => {
 
     data = data.filter(d => d.lapCount != '0')
 
-    data.forEach(runner => {
-        let runningData = retrievedRunnerData.find(r => r.indexName === runner.indexName)
+    data.forEach(raceResult => {
+        let runnerData = retrievedRunnerData.find(r => r.indexName === raceResult.indexName)
 
-        if (!runningData) {
-            runningData = {
-                name: runner.name,
-                indexName: runner.indexName,
+        if (!runnerData) {
+            runnerData = {
+                name: raceResult.name,
+                indexName: raceResult.indexName,
                 raceData: [],
                 attempts: 0,
                 totalLaps: 0,
@@ -175,34 +175,34 @@ const getResults = async (year) => {
                 lapRecord: [0, 0],
             }
 
-            retrievedRunnerData.push(runningData)
+            retrievedRunnerData.push(runnerData)
         }
 
-        runningData.attempts++;
-        runningData.totalLaps += parseInt(runner.lapCount)
+        runnerData.attempts++;
+        runnerData.totalLaps += parseInt(raceResult.lapCount)
 
-        if (runner.lapCount > runningData.lapRecord[0]) {
-            runningData.lapRecord[0] = parseInt(runner.lapCount)
-            runningData.lapRecord[1] = year.year
+        if (raceResult.lapCount > runnerData.lapRecord[0]) {
+            runnerData.lapRecord[0] = parseInt(raceResult.lapCount)
+            runnerData.lapRecord[1] = year.year
         }
 
-        if (compareTime(runningData.fastest, runner.fastest) > 0)
-            runningData.fastest = [...runner.fastest, year.year]
+        if (compareTime(runnerData.fastest, raceResult.fastest) > 0)
+            runnerData.fastest = [...raceResult.fastest, year.year]
 
-        if (compareTime(runner.slowest, runningData.slowest) > 0)
-            runningData.slowest = [...runner.slowest, year.year]
+        if (compareTime(raceResult.slowest, runnerData.slowest) > 0)
+            runnerData.slowest = [...raceResult.slowest, year.year]
 
-        runningData.totalTime += runner.totalTime[0] + runner.totalTime[1] / 60 + runner.totalTime[2] / 3600
+        runnerData.totalTime += raceResult.totalTime[0] + raceResult.totalTime[1] / 60 + raceResult.totalTime[2] / 3600
 
-        runningData.raceData.push({
+        runnerData.raceData.push({
             year: year.year,
-            bib: runner.bib,
-            lapCount: runner.lapCount,
-            last: runner.last,
-            slowest: runner.slowest,
-            fastest: runner.fastest,
-            average: runner.average,
-            totalTime: runner.totalTime,
+            bib: raceResult.bib,
+            lapCount: raceResult.lapCount,
+            last: raceResult.last,
+            slowest: raceResult.slowest,
+            fastest: raceResult.fastest,
+            average: raceResult.average,
+            totalTime: raceResult.totalTime,
         })
     });
 }

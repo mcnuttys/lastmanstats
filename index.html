@@ -17,10 +17,10 @@
     <div id="runner-holder" class="container">
         <input id="runnerSearch_input" class="u-full-width button" placeholder="Enter Runner Name Here...">
         <div class="row header">
-            <div class="six columns"><b>Name</b></div>
-            <div class="two columns attempts"><b>Total Time</b></div>
-            <div class="two columns attempts"><b>Laps</b></div>
-            <div class="two columns attempts"><b>Races</b></div>
+            <div id="name_filter" class="six columns"><b>Name</b></div>
+            <div id="time_filter" class="two columns attempts"><b>Total Time</b></div>
+            <div id="laps_filter" class="two columns attempts"><b>Laps</b></div>
+            <div id="race_filter" class="two columns attempts"><b>Races</b></div>
         </div>
         <div class="loader-holder">
             <div id="runner-loader" class="loader"></div>
@@ -32,7 +32,8 @@
         </div>
     </div>
     <div class="container">
-        <h6>* Tip if you put a comma between search terms you can bring up multiple people for example: "name 1, name 2"</h6>
+        <h6>* Tip if you put a comma between search terms you can bring up multiple people for example: "name 1, name 2"
+        </h6>
     </div>
     <script src="src/runnerData.js"></script>
     <script src="src/script.js"></script>

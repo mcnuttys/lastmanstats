@@ -1,4 +1,14 @@
 let runnerData = []
+
+let sort = (a, b) => {
+    if (a.attempts < b.attempts)
+        return 1;
+    if (a.attempts > b.attempts)
+        return -1;
+    return 0
+};
+let sortFilter = undefined, sortDirection = 1;
+
 const init = async () => {
     document.querySelector('#runnerSearch_input').addEventListener('input', onSearchChanged)
 
@@ -23,14 +33,121 @@ const init = async () => {
 
     populateOverallStats(runnerData);
     appendOverallHistogram(runnerData);
+
+    const nameFilter = document.querySelector('#name_filter')
+    nameFilter.onclick = () => {
+        if (sortFilter === 'name_filter') {
+            sortDirection *= -1
+
+            nameFilter.innerHTML = `<b>Name ${sortDirection === 1 ? '&darr;' : '&uarr;'}</b>`
+        } else {
+            if (sortFilter)
+                document.querySelector(`#${sortFilter}`).innerHTML = document.querySelector(`#${sortFilter}`).data
+
+            sortFilter = 'name_filter'
+            sortDirection = 1
+
+            nameFilter.innerHTML = `<b>Name ${sortDirection === 1 ? '&darr;' : '&uarr;'}</b>`
+            nameFilter.data = '<b>Name</b>'
+        }
+
+        sort = (a, b) => {
+            if (a.name < b.name)
+                return -1 * sortDirection;
+            if (a.name > b.name)
+                return 1 * sortDirection;
+            return 0
+        }
+
+        refreshRunnerList();
+    }
+
+    const timeFilter = document.querySelector('#time_filter')
+    timeFilter.onclick = () => {
+        if (sortFilter === 'time_filter') {
+            sortDirection *= -1
+
+            timeFilter.innerHTML = `<b>Total Time ${sortDirection === 1 ? '&darr;' : '&uarr;'}</b>`
+        } else {
+            if (sortFilter)
+                document.querySelector(`#${sortFilter}`).innerHTML = document.querySelector(`#${sortFilter}`).data
+
+            sortFilter = 'time_filter'
+            sortDirection = 1
+
+            timeFilter.innerHTML = `<b>Total Time ${sortDirection === 1 ? '&darr;' : '&uarr;'}</b>`
+            timeFilter.data = '<b>Total Time</b>'
+        }
+
+        sort = (a, b) => (b.totalTime - a.totalTime) * sortDirection
+
+        refreshRunnerList();
+    }
+
+    const lapsFilter = document.querySelector('#laps_filter')
+    lapsFilter.onclick = () => {
+        if (sortFilter === 'laps_filter') {
+            sortDirection *= -1
+
+            lapsFilter.innerHTML = `<b>Laps ${sortDirection === 1 ? '&darr;' : '&uarr;'}</b>`
+        } else {
+            if (sortFilter)
+                document.querySelector(`#${sortFilter}`).innerHTML = document.querySelector(`#${sortFilter}`).data
+
+            sortFilter = 'laps_filter'
+            sortDirection = 1
+
+            lapsFilter.innerHTML = `<b>Laps ${sortDirection === 1 ? '&darr;' : '&uarr;'}</b>`
+            lapsFilter.data = '<b>Laps</b>'
+        }
+
+        sort = (a, b) => (b.totalLaps - a.totalLaps) * sortDirection
+
+        refreshRunnerList();
+    }
+
+    const raceFilter = document.querySelector('#race_filter')
+    raceFilter.onclick = () => {
+        if (sortFilter === 'race_filter') {
+            sortDirection *= -1
+
+            raceFilter.innerHTML = `<b>Races ${sortDirection === 1 ? '&darr;' : '&uarr;'}</b>`
+        } else {
+            if (sortFilter)
+                document.querySelector(`#${sortFilter}`).innerHTML = document.querySelector(`#${sortFilter}`).data
+
+            sortFilter = 'race_filter'
+            sortDirection = 1
+
+            raceFilter.innerHTML = `<b>Races ${sortDirection === 1 ? '&darr;' : '&uarr;'}</b>`
+            raceFilter.data = '<b>Races</b>'
+        }
+
+        sort = (a, b) => (b.attempts - a.attempts) * sortDirection
+
+        refreshRunnerList();
+    }
+    raceFilter.dispatchEvent(new Event('click'))
 }
 
 let page = 0
 let maxCountPerPage = 10
 
-
+let displayedList = []
 const displayRunnerList = (list) => {
+    displayedList = list
+
     let holder = document.querySelector('#runner-holder');
+
+    list = list.sort((a, b) => {
+        if (a.name < b.name)
+            return -1;
+        if (a.name > b.name)
+            return 1;
+        return 0
+    });
+
+    list = list.sort(sort);
 
     while (holder.childNodes[4]) {
         holder.removeChild(holder.childNodes[4]);
@@ -84,6 +201,27 @@ const displayRunnerList = (list) => {
         if (nextPage)
             holder.querySelector('#nextRunnerPage_button').onclick = gotoNextPage
     }
+}
+
+const refreshRunnerList = () => {
+    displayRunnerList(displayedList)
+}
+
+const onSearchChanged = (search) => {
+    page = 0
+    search = search.target.value
+
+    let terms = search.split(',')
+    let fileteredList = []
+    terms.forEach(term => {
+        if (terms.length > 1 && term === '')
+            return;
+
+        let filtered = runnerData.filter(r => r.name.toUpperCase().indexOf(term.trim().toUpperCase()) > -1)
+        fileteredList.push(...filtered)
+    })
+
+    displayRunnerList(fileteredList)
 }
 
 const runnerListItem = (runner) => {
@@ -381,23 +519,6 @@ const appendTimeLapLineGraph = (runner) => {
         .text(d => d)
         .attr('text-anchor', 'right')
         .style('alignment-baseline', 'middle')
-}
-
-const onSearchChanged = (search) => {
-    page = 0
-    search = search.target.value
-
-    let terms = search.split(',')
-    let fileteredList = []
-    terms.forEach(term => {
-        if (terms.length > 1 && term === '')
-            return;
-
-        let filtered = runnerData.filter(r => r.name.toUpperCase().indexOf(term.trim().toUpperCase()) > -1)
-        fileteredList.push(...filtered)
-    })
-
-    displayRunnerList(fileteredList)
 }
 
 const populateOverallStats = (raceData) => {
